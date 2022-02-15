@@ -1,0 +1,220 @@
+{
+  "type": "object",
+  "title": "Loader metadata schema",
+  "format": "grid-strict",
+  "required": [ "datasetId", "date", "grid" , "dataset_type" , "single_multiband" , "dataset_dimension" , "dataset_dimension_description" , "dataset_description", "title" , "geometry" ],
+  "properties": {
+    "identifier":{
+      "title": "identifier",
+      "type": "string",
+      "description": "Optional parameter that can be used to identify and overwrite an existing element or to force a specific id for the raster on catalogue. If not specified a UUID will be produced"
+    },
+
+    "datasetId": {
+      "title": "datasetId",
+      "type": "string",
+      "minLength" : 1,
+      "pattern": "^\\S+$",
+      "description": "The dataset identifier"
+    },
+
+    "grid":{
+      "title":"grid",
+      "type": "boolean",
+      "minLength":1,
+      "description":"it rappresents the presence or not of a grid system"
+    },
+
+    "gridType":{
+      "title":"gridType",
+      "type":"string",
+      "description":"if grid is true, this value is required. it rappresents the grid type (eg.: MGRS, PATHROW,CUSTOM...)"
+    },
+
+    "plan":{
+      "title":"plan",
+      "type":"string",
+      "description":"if grid is true, this value is required. it rappresents the first grid selector label"
+    },
+    "plan_value":{
+      "title":"plan_value",
+      "type":"string",
+      "description":"if grid is true, this value is required. it rappresents the first grid selector value"
+    },
+
+    "image":{
+      "title":"image",
+      "type":"string",
+      "description":"if grid is true, this value is required. it rappresents the second grid selector label"
+    },
+
+    "image_value":{
+      "title":"image_value",
+      "type":"string",
+      "description":"if grid is true, this value is required. it rappresents the second grid selector value"
+    },
+
+    "subDatasetId":{
+      "title":"subDatasetId",
+      "type":"string",
+      "pattern":"^(([a-zA-Z]+)|([_]+)|([0-9]+))+$",
+      "description":"it rappresents the identifier of a subdataset.it is the union between the datasetId and a variable"
+    },
+
+    "dataset_type":{
+      "title":"dataset_type",
+      "type":"string",
+      "minLength":1,
+      "description":"it rappresent the category of the dataset, for eg.: Raster,Vector,Vertial Column ..."
+    },
+
+    "dataset_dimension":{
+      "title":"dataset_dimension",
+      "type":"string",
+      "minLength":1,
+      "pattern":"^([0-9]+)$",
+      "description":"it rappresens the dataset dimensions number."
+    },
+
+    "dataset_dimension_description":{
+      "title":"dataset_dimension_description",
+      "type":"string",
+      "minLength":1,
+      "description":"it rappresents the dataset dimensions label. eg:(Lat Long Time)"
+    },
+
+    "dataset_description":{
+      "title":"dataset_description",
+      "type":"string",
+      "minLength":1,
+      "description":"small description about the dataset"
+    },
+
+    "single_multiband":{
+      "title":"single_multiband",
+      "type":"string",
+      "minLength":1,
+      "description":"it rappresets the number of band or sundataset that make up the dataset"
+    },
+
+    "date":{
+      "title": "date",
+      "type": "string",
+      "minLength" : 1,
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+      "description": "The reference date of the product in ISO format [ YYYY-MM-DDThh:mm:ssZ ]"
+    },
+
+    "path":{
+	    "title":"source",
+	    "type":"string",
+	    "pattern":"^((\/vsis3\/)|(\/))",
+	    "description":"Absolute filename or remote filename"
+    },
+
+    "title":{
+      "title": "title",
+      "type": "string",
+      "description": "Not the name of the file, something more friendly in order to be shown to the user instead of the filename."
+    },
+
+    "tile":{
+      "title": "tile",
+      "type": "string",
+      "pattern": "^([A-Z]{1}[0-9]{2}[A-Z]{3}|[0-9]{6})$",
+      "description": "The MGRS tile for Sentinel2 or the PATHROW (6 digits) for Landsat, For this kind of datasets the tile parameter is recomended"
+    },
+
+    "abstract":{
+      "title": "abstract",
+      "type": "string",
+      "description": "A more detailed description that could be shown as information to the user"
+    },
+
+    "keywords":{
+      "title": "keywords",
+      "type": "string",
+      "description": "This could be even also included as input for the pipelines in order to allow the users to search easily the products later. For example, when launching a MTC, if I am doing it because it has been an earthquake, I would like to have this as a keyword so in the future I could look for all the products with earthquake in the catalogue to do a specific study. Also for example if we are processing products for an specific project, it is useful to have the name of the project as keyword to be able to search easily all of them."
+    },
+
+    "geometry":{
+      "title": "geometry",
+      "type": "string",
+      "description": "GeoJson geometry"
+    },
+
+    "timeExtent":{
+      "title": "timeExtent",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+      "description": "Time interval in ISO format [ YYYY-MM-DDThh:mm:ssZ/YYYY-MM-DDThh:mm:ssZ ]"
+    },
+
+    "resolution":{
+      "title": "resolution",
+      "type": "string",
+      "description": "The resolution and the related UOM"
+    },
+
+    "productType":{
+      "title": "productType",
+      "type": "string",
+      "description": "The product Type"
+    },
+
+    "instrument":{
+      "title": "instrument",
+      "type": "string",
+      "description": "Not sure if actually needed or not, but I think that in the future if we have algorithms which support different instruments as input, it is needed to differentiate them (for example S5-P and S5)"
+    },
+
+    "compositeType":{
+      "title": "compositeType",
+      "type": "string",
+      "description": "time period that the product covers. Very useful for S5 products, where we apply average in 7-10 days, 1 month... But also useful for ACD, MTC, S2 change detection, where the date could be the last one and with this parameter we can know the previous image. (e.g. P10D; P1M; P1Y)"
+    },
+
+    "cloudCover":{
+      "title": "cloudCover",
+      "type": "string",
+      "description": "will be only used for optical and thermal images"
+    },
+
+    "polarization":{
+      "title": "polarization",
+      "type": "string",
+      "description": "for SAR images. (e.g. I can compute MTC using VV or VH polarizations. Perhaps could be removed and included only as params information."
+    },
+
+    "processorName":{
+      "title": "processorName",
+      "type": "string",
+      "description": "perhaps in the future we will have different processor creating products of the same collection (e.g. different processor for S5P and S5)"
+    },
+
+    "processorVersion":{
+      "title": "processorVersion",
+      "type": "string",
+      "description": "id, image, hash ..."
+    },
+
+    "originalDataset":{
+      "title": "originalDataset",
+      "type": "string",
+      "description": "csv with urls to original scenes items"
+    },
+
+    "paramsInformation":{
+      "title": "paramsInformation",
+      "type": "string",
+      "description": "Sometimes this could be the same information than previous fields (polarization, compositeType...)"
+    },
+
+    "creationDate":{
+      "title": "creationDate",
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$",
+      "description": "The creation date in ISO format [ YYYY-MM-DDThh:mm:ssZ ]"
+    }
+  }
+}
