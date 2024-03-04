@@ -1,0 +1,11 @@
+pymongo
+gunicorn
+gevent
+flask
+numpy
+boto3
+requests
+pyproj
+Django
+python-dotenv
+sat-search
