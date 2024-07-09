@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dasmongo.fullname" . }}
+  labels:
+    {{- include "dasmongo.labels" . | nindent 4 }}
+data:
+  REFERENCE_HOST           : "{{ .Values.global.REFERENCE_HOST }}"
+  STORAGE_DIR              : "{{ .Values.config.STORAGE_DIR }}"
+  MONGO_HOST            : "{{ .Values.global.db.MONGO_INITDB_HOST_NEW }}"
+  MONGO_INITDB_ROOT_USERNAME: "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}"
+  MONGO_INITDB_ROOT_PASSWORD: "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}"
+  MONGO_INITDB_DATABASE: "{{ .Values.global.db.MONGO_INITDB_DATABASE_NEW }}"
+  AWS_ACCESS_KEY_ID        : "{{ .Values.global.AWS.SECRET_ID }}"
+  AWS_SECRET_ACCESS_KEY    : "{{ .Values.global.AWS.SECRET_KEY }}"
+  AWS_S3_ENDPOINT          : "{{ .Values.global.AWS.ENDPOINT }}"
+  AWS_REGION               : "{{ .Values.global.AWS.REGION }}"
+  AWS_BUCKET               : "{{ .Values.global.AWS.BUCKET_NAME }}"
+  GDAL_DISABLE_READDIR_ON_OPEN : "EMPTY_DIR"
+  WCSPATH_ENDPOINT         : "{{ .Values.config.WCSPATH_ENDPOINT }}"
+  OPS_MODULE               : "{{ .Values.config.OPS_MODULE }}"
+  STAC_MODULE              : "{{ .Values.config.STAC_MODULE }}"
+  STAC_TITLE              : "{{ .Values.config.STAC_TITLE }}"
+  STAC_PREFIX              : "{{ .Values.config.STAC_PREFIX }}"
+  DATASETS_SPEC             : "{{ .Values.config.DATASETS_SPEC }}"
+  INGESTION_LOG             : "{{ .Values.config.INGESTION_LOG }}"
+  FAIL_INGESTION_LOG             : "{{ .Values.config.FAIL_INGESTION_LOG }}"
+ 

@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "dasnasamongodb.fullname" . }}-data-vcl
+  labels:
+    {{- include "dasnasamongodb.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.global.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

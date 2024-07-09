@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-vap-data-vcl
+  labels:
+    {{- include "dasmongovap.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.global.nfsStorageClassName }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi

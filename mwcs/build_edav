@@ -1,0 +1,12 @@
+#!/bin/bash
+
+version="2.1-3n"
+
+docker build  --no-cache -t "edav/mwcs:$version" .
+
+image_id="$( docker image ls -f "reference=edav/mwcs:$version" -q )"
+
+docker tag "$image_id" "registry.eu-west-0.prod-cloud-ocb.orange-business.com/cloud-biomass-maap/edav/mwcs:$version"
+
+docker push "registry.eu-west-0.prod-cloud-ocb.orange-business.com/cloud-biomass-maap/edav/mwcs:$version"
+

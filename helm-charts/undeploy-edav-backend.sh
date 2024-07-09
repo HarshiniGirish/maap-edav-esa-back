@@ -1,0 +1,1 @@
+helm uninstall $EDAV_BACKEND_HELM_RELEASE_NAME --namespace $EDAV_NAMESPACE

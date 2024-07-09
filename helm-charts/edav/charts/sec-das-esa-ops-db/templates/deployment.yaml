@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sec-dasops-db.fullname" . }}
+  labels:
+    {{- include "sec-dasops-db.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "sec-dasops-db.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "sec-dasops-db.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "sec-dasops-db.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          #livenessProbe:
+          #  exec:
+          #    command:
+          #    - mongo -u "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}" -p "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}" --authenticationDatabase "{{ .Values.global.db.MONGO_INITDB_DATABASE }}"
+          #  initialDelaySeconds: 60
+          #  periodSeconds: 300
+          ports:
+            - name: mongodb
+              containerPort: 27017
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "sec-dasops-db.fullname" . }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ include "sec-dasops-db.fullname" . }}-data-vol
+            mountPath: "/data/db"
+            subPath: "sec-dasops-db"
+      volumes:
+        - name: {{ include "sec-dasops-db.fullname" . }}-data-vol
+          persistentVolumeClaim:
+            claimName: {{ include "sec-dasops-db.fullname" . }}-data-vcl
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

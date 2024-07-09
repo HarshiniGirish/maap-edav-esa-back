@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dasvapops.fullname" . }}
+  labels:
+    {{- include "dasvapops.labels" . | nindent 4 }}
+data:
+  REFERENCE_HOST           : "{{ .Values.global.REFERENCE_HOST }}"
+  STORAGE_DIR              : "{{ .Values.config.STORAGE_DIR }}"
+  MONGO_HOST            : "{{ .Release.Name }}-{{ .Values.config.MONGO_HOST_VAP }}"
+  MONGO_INITDB_ROOT_USERNAME: "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}"
+  MONGO_INITDB_ROOT_PASSWORD: "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}"
+  MONGO_INITDB_DATABASE: "{{ .Values.global.db.MONGO_INITDB_DATABASE }}"
+  AWS_ACCESS_KEY_ID        : "{{ .Values.global.AWS.SECRET_ID }}"
+  AWS_SECRET_ACCESS_KEY    : "{{ .Values.global.AWS.SECRET_KEY }}"
+  AWS_S3_ENDPOINT          : "{{ .Values.global.AWS.ENDPOINT }}"
+  AWS_REGION               : "{{ .Values.global.AWS.REGION }}"
+  GDAL_DISABLE_READDIR_ON_OPEN : "EMPTY_DIR"
+  DATASETS_SPEC             : "{{ .Values.config.DATASETS_SPEC }}"
+  INGESTION_LOG             : "{{ .Values.config.INGESTION_LOG }}"
+  FAIL_INGESTION_LOG             : "{{ .Values.config.FAIL_INGESTION_LOG }}"
+ 

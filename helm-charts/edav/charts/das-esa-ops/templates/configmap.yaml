@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dasops.fullname" . }}
+  labels:
+    {{- include "dasops.labels" . | nindent 4 }}
+data:
+  REFERENCE_HOST           : "{{ .Values.global.REFERENCE_HOST }}"
+  STORAGE_DIR              : "{{ .Values.config.STORAGE_DIR }}"
+  MONGODB_INIT_HOSTNAME            : "{{ .Values.global.db.MONGO_INITDB_HOST_OPEN }}"
+  MONGODB_INIT_USER: "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}"
+  MONGODB_INIT_PASSWORD: "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}"
+  MONGODB_INIT_DBNAME: "{{ .Values.global.db.MONGO_INITDB_DATABASE_NEW }}"
+  MONGO_CONNECTION_STRING: "{{ .Values.config.MONGO_CONNECTION_STRING }}"
+  AUTHORIZATION_METHOD: "{{ .Values.global.noauth.AUTHORIZATION_METHOD }}"
+  ENABLEAUTH: "{{ .Values.global.noauth.ENABLE_AUTH }}"
+  RESOURCE_ID: "{{ .Values.global.noauth.RESOURCE_ID }}"
+  AWS_ACCESS_KEY_ID        : "{{ .Values.global.AWS.SECRET_ID }}"
+  AWS_SECRET_ACCESS_KEY    : "{{ .Values.global.AWS.SECRET_KEY }}"
+  AWS_S3_ENDPOINT          : "{{ .Values.global.AWS.ENDPOINT }}"
+  AWS_REGION               : "{{ .Values.global.AWS.REGION }}"
+  GDAL_DISABLE_READDIR_ON_OPEN : "EMPTY_DIR"
+  CATALOG_LOG: "{{ .Values.config.CATALOG_LOG }}"
+  SERVICE_TOKEN: "{{ .Values.global.noauth.SERVICE_TOKEN }}"
+  AUTH_ENDPOINT: "{{ .Values.global.noauth.AUTH_ENDPOINT }}"
+  OPS_MODULE: "{{ .Values.config.OPS_MODULE }}"
+  OPS_URL_PREFIX: "{{ .Values.config.OPS_PREFIX }}"
+  STAC_TITLE: "{{ .Values.config.STAC_TITLE }}"
+  STAC_MODULE: "{{ .Values.config.STAC_MODULE }}"
+  STAC_URL_PREFIX: "{{ .Values.config.STAC_PREFIX }}"
+ 

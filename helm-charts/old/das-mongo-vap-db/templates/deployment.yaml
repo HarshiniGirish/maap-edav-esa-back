@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "dasmongovapdb.fullname" . }}
+  labels:
+    {{- include "dasmongovapdb.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "dasmongovapdb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "dasmongovapdb.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "dasmongovapdb.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          #livenessProbe:
+          #  exec:
+          #    command:
+          #    - mongo -u "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}" -p "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}" --authenticationDatabase "{{ .Values.global.db.MONGO_INITDB_DATABASE }}"
+          #  initialDelaySeconds: 60
+          #  periodSeconds: 300
+          ports:
+            - name: mongodb
+              containerPort: 27017
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "dasmongovapdb.fullname" . }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: {{ include "dasmongovapdb.fullname" . }}-data-vol
+            mountPath: "/data/db"
+            subPath: "das-mongo-vap-db"
+      volumes:
+        - name: {{ include "dasmongovapdb.fullname" . }}-data-vol
+          persistentVolumeClaim:
+            claimName: {{ include "dasmongovapdb.fullname" . }}-vap-data-vcl
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

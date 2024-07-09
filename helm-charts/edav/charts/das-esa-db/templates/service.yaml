@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dasesadb.fullname" . }}
+  labels:
+    {{- include "dasesadb.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 27017
+      protocol: TCP
+      name: mongodb
+  selector:
+    {{- include "dasesadb.selectorLabels" . | nindent 4 }}

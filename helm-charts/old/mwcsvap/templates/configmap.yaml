@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mwcsvap.fullname" . }}
+  labels:
+    {{- include "mwcsvap.labels" . | nindent 4 }}
+data:
+  REFERENCE_HOST           : "{{ .Values.global.REFERENCE_HOST_VAP }}"
+  AWS_SECRET_KEY           : "{{ .Values.global.AWS.SECRET_KEY }}"
+  AWS_SECRET_ID            : "{{ .Values.global.AWS.SECRET_ID }}"
+  AWS_ENDPOINT             : "{{ .Values.global.AWS.ENDPOINT }}"
+  MWCS_MAX_MEMORY          : "{{ .Values.global.MWCS.MEMORY }}"

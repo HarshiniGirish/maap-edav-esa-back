@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "dasesadb.fullname" . }}
+  labels:
+    {{- include "dasesadb.labels" . | nindent 4 }}
+data:
+  MONGO_HOST            : "{{ .Release.Name }}-{{ .Values.config.MONGO_HOST }}"
+  MONGO_INITDB_ROOT_USERNAME: "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}"
+  MONGO_INITDB_ROOT_PASSWORD: "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}"
+  MONGO_INITDB_DATABASE: "{{ .Values.global.db.MONGO_INITDB_DATABASE_NEW }}"

@@ -1,0 +1,94 @@
+# Default values for das.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: registry.eu-west-0.prod-cloud-ocb.orange-business.com/cloud-biomass-maap/edav/das-maap-mongo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: "docker-registry-cloud"
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 780
+  targetPort: 80
+
+ingress:
+  enabled: true
+  annotations: 
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: edav-das-vap.dev.esa-maap.org
+      paths:
+        - /loader
+  tls:
+    - secretName: biomass-ssl-key
+      hosts:
+        - edav-das-vap.dev.esa-maap.org
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  REFERENCE_HOST: "https://edav-das-vap.dev.esa-maap.org"
+  STORAGE_DIR: "/mnt/storage"
+  MONGO_HOST: "dasmongovapdb.edav"
+  MONGO_INITDB_ROOT_USERNAME: "edav"
+  MONGO_INITDB_ROOT_PASSWORD: "edavpass"
+  MONGO_INITDB_DATABASE: "catalogue"
+  INGESTION_LOG: "/opt/mea/log/ingestion.log"
+  FAIL_INGESTION_LOG: "/opt/mea/log/fail_ingestion.log"
+  DATASETS_SPEC: "/opt/mea/das/ingestion/loader_module/sub_module/datasets_spec.json"

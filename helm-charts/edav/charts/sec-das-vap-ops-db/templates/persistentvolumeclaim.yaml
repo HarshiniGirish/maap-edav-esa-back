@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "sec-dasvapops-db.fullname" . }}-data-vcl
+  labels:
+    {{- include "sec-dasvapops-db.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.global.storageClassName }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

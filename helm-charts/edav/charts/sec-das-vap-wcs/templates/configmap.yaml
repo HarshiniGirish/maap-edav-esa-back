@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sec-mwcsvap.fullname" . }}
+  labels:
+    {{- include "sec-mwcsvap.labels" . | nindent 4 }}
+data:
+  MWCS_MAX_MEMORY          : "{{ .Values.global.MWCS.MEMORY }}"
+  AWS_SECRET_ID            : "{{ .Values.global.AWS.SECRET_ID_NASA }}"
+  AWS_SECRET_KEY           : "{{ .Values.global.AWS.SECRET_KEY_NASA }}"
+  AWS_REGION               : "{{ .Values.global.AWS.REGION_NASA }}"
+  AWS_ENDPOINT             : "{{ .Values.global.AWS.ENDPOINT_NASA }}"
+  MONGO_USER               : "{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}"
+  MONGO_PW                 : "{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}"  
+  MONGO_HOST               : "{{ .Values.global.db.MONGO_INITDB_HOST_VAP_RESTRICTED }}"
+  MONGO_DB_NAME            : "{{ .Values.global.db.MONGO_INITDB_DATABASE_NEW }}"
+  MAAPAUTHURL              : "{{ .Values.global.auth.AUTH_ENDPOINT}}" 
+  MAAPAUTHKEY              : "{{.Values.global.auth.SERVICE_TOKEN}}"

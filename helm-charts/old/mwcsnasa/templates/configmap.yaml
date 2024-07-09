@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mwcsnasa.fullname" . }}
+  labels:
+    {{- include "mwcsnasa.labels" . | nindent 4 }}
+data:
+  REFERENCE_HOST           : "{{ .Values.global.REFERENCE_HOST_NASA }}"
+  AWS_SECRET_KEY           : "{{ .Values.global.AWS.SECRET_KEY_NASA }}"
+  AWS_SECRET_ID            : "{{ .Values.global.AWS.SECRET_ID_NASA }}"
+  AWS_ENDPOINT             : "{{ .Values.global.AWS.ENDPOINT_NASA }}"
+  AWS_REGION               : "{{ .Values.global.AWS.REGION_NASA }}"
+  MWCS_MAX_MEMORY          : "{{ .Values.global.MWCS.MEMORY }}"

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "sec-dasmongovap.fullname" . }}
+  labels:
+    {{- include "sec-dasmongovap.labels" . | nindent 4 }}
+data:
+  MONGODB_USER: '{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}'
+  MONGODB_PASSWORD: '{{ .Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}'
+  MONGODB_HOST: '{{ .Values.global.db.MONGO_INITDB_HOST_VAP_RESTRICTED }}'
+  MONGODB_USER_ADMIN: '{{ .Values.global.db.MONGO_INITDB_ROOT_USERNAME }}'
+  MONGODB_PASSWORD_ADMIN: '{{.Values.global.db.MONGO_INITDB_ROOT_PASSWORD }}'
+  MONGODB_DBNAME: '{{ .Values.global.db.MONGO_INITDB_DATABASE_NEW }}'
+  AWS_BUCKET: '{{ .Values.global.AWS.BUCKET_NAME_NEW }}'
+  AWS_ACCESS_KEY_ID: '{{ .Values.global.AWS.SECRET_ID }}'
+  AWS_SECRET_ACCESS_KEY: '{{ .Values.global.AWS.SECRET_KEY }}'
+  AWS_S3_ENDPOINT: '{{ .Values.global.AWS.ENDPOINT }}'
+  WCSPATH_ENDPOINT: '{{ .Values.config.WCSPATH_ENDPOINT }}'
+  MAAP_AUTH: '{{ .Values.config.MAAP_AUTH }}'
+  AUTH_ENDPOINT: '{{ .Values.global.auth.AUTH_ENDPOINT }}'
+  SERVICE_TOKEN: '{{.Values.global.auth.SERVICE_TOKEN }}'
+  INGESTION_LOG: '{{ .Values.config.INGESTION_LOG }}'
+  TMP_VRT_DIR: '{{.Values.config.TMP_VRT_DIR }}'
+  GDAL_DISABLE_READDIR_ON_OPEN : "EMPTY_DIR"
