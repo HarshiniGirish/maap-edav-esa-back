@@ -1,4 +1,5 @@
-#BUOLDING
+#BUILDING
+
 ```bash
 # edit build updating version
 $ cat build | bash
